@@ -6,10 +6,16 @@ from sqlalchemy import create_engine, text
 import os
 
 app = FastAPI()
+origins = [
+    "https://radar-mei-site.vercel.app",
+    "http://localhost:3000",
+    "http://localhost:5173",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # liberar geral temporariamente
-    allow_credentials=True,
+    allow_origins=origins,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
