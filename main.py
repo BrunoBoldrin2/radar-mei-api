@@ -37,3 +37,26 @@ def analisar_mei(dados: AnaliseMEI):
         "projecao_anual": round(projecao_anual, 2),
         "risco": risco
     }
+
+@app.get("/simular")
+def simular(valor: float):
+
+    limite = 81000
+
+    projecao_anual = valor * 12
+    percentual_limite = (projecao_anual / limite) * 100
+
+    if percentual_limite >= 100:
+        risco = "alto"
+    elif percentual_limite >= 80:
+        risco = "moderado"
+    else:
+        risco = "baixo"
+
+    return {
+        "media_mensal": valor,
+        "projecao_anual": round(projecao_anual, 2),
+        "percentual_limite": round(percentual_limite, 2),
+        "risco": risco
+    }
+
