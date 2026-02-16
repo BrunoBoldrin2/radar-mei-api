@@ -1,11 +1,3 @@
-from fastapi import FastAPI
-
-app = FastAPI()
-
-@app.get("/")
-def home():
-    return {"status": "Radar MEI API online"}
-
 from pydantic import BaseModel
 from typing import List
 
