@@ -1,9 +1,32 @@
+import os
+from sqlalchemy import create_engine, text
+
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List
 
 app = FastAPI()
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+engine = create_engine(DATABASE_URL)
+
+def criar_tabela():
+    with engine.connect() as conn:
+        conn.execute(text("""
+            CREATE TABLE IF NOT EXISTS analises (
+                id SERIAL PRIMARY KEY,
+                valor_mensal FLOAT,
+                percentual_limite FLOAT,
+                risco TEXT,
+                criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        """))
+        conn.commit()
+
+criar_tabela()
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -62,6 +85,21 @@ def simular(valor: float):
         risco = "moderado"
     else:
         risco = "baixo"
+
+    with engine.connect() as conn:
+    conn.execute(
+        text("""
+            INSERT INTO analises (valor_mensal, percentual_limite, risco)
+            VALUES (:valor, :percentual, :risco)
+        """),
+        {
+            "valor": valor,
+            "percentual": percentual_limite,
+            "risco": risco
+        }
+    )
+    conn.commit()
+
 
     return {
         "media_mensal": valor,
