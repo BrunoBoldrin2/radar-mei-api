@@ -1,17 +1,17 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
+from typing import List
 
 app = FastAPI()
 
 @app.get("/")
 def home():
+    return {"status": "Radar MEI API online"}
 
-return {"status": "Radar MEI API online"}
-
-from pydantic import BaseModel
-from typing import List
 
 class AnaliseMEI(BaseModel):
     faturamentos: List[float]
+
 
 @app.post("/analisar-mei")
 def analisar_mei(dados: AnaliseMEI):
