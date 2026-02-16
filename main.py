@@ -86,7 +86,8 @@ def simular(valor: float):
     else:
         risco = "baixo"
 
-    with engine.connect() as conn:
+    # salvar no banco
+with engine.connect() as conn:
     conn.execute(
         text("""
             INSERT INTO analises (valor_mensal, percentual_limite, risco)
@@ -99,6 +100,7 @@ def simular(valor: float):
         }
     )
     conn.commit()
+
 
 
     return {
