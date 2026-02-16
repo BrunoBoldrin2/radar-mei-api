@@ -71,6 +71,7 @@ def analisar_mei(dados: AnaliseMEI):
         "risco": risco
     }
 
+
 @app.get("/simular")
 def simular(valor: float):
 
@@ -87,21 +88,19 @@ def simular(valor: float):
         risco = "baixo"
 
     # salvar no banco
-with engine.connect() as conn:
-    conn.execute(
-        text("""
-            INSERT INTO analises (valor_mensal, percentual_limite, risco)
-            VALUES (:valor, :percentual, :risco)
-        """),
-        {
-            "valor": valor,
-            "percentual": percentual_limite,
-            "risco": risco
-        }
-    )
-    conn.commit()
-
-
+    with engine.connect() as conn:
+        conn.execute(
+            text("""
+                INSERT INTO analises (valor_mensal, percentual_limite, risco)
+                VALUES (:valor, :percentual, :risco)
+            """),
+            {
+                "valor": valor,
+                "percentual": percentual_limite,
+                "risco": risco
+            }
+        )
+        conn.commit()
 
     return {
         "media_mensal": valor,
