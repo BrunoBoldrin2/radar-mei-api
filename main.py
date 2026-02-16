@@ -5,15 +5,10 @@ from typing import List
 from sqlalchemy import create_engine, text
 import os
 
-
-
 app = FastAPI()
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://radar-mei-site.vercel.app"
-    ],
+    allow_origins=["*"],  # liberar geral temporariamente
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
